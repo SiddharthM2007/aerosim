@@ -1,0 +1,19 @@
+#python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual env
+.venv/
+env/
+venv/
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+dist/
