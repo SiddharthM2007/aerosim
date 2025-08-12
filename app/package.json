@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "d3": "^7.9.0",
     "d3-scale": "^4.0.2",
+    "d3-scale-chromatic": "^3.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "three": "^0.179.1",
@@ -22,6 +24,7 @@
     "@tauri-apps/cli": "^2.7.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
+    "@types/three": "^0.179.0",
     "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",

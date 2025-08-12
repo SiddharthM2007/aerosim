@@ -1,3 +1,4 @@
+# server/main.py
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -5,12 +6,13 @@ from server.physics.panel2d.solver import solve_airfoil_vortex_panels
 
 app = FastAPI(title="AeroSim API", version="0.2")
 
+# CORS for the Vite dev server
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # dev only
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
 
 class Sim2DReq(BaseModel):
@@ -28,23 +30,29 @@ async def health():
 @app.post("/simulate2d")
 async def simulate2d(req: Sim2DReq):
     shape = req.shape.lower()
+    # only NACA 4-digit for Sprint 0
     if not (shape.startswith("naca") and len(shape) == 8 and shape[4:].isdigit()):
         return {"error": "Only NACA 4-digit like 'naca0012' supported for now."}
 
     result = solve_airfoil_vortex_panels(
-        naca=shape[-4:], alpha_deg=req.aoa_deg, Vinf=req.velocity, rho=req.rho, npts=req.npts
+        naca=shape[-4:],
+        alpha_deg=req.aoa_deg,
+        Vinf=req.velocity,
+        rho=req.rho,
+        npts=req.npts,
     )
-    # Pack only the fields the UI needs now
     return {
         "cp": result["cp"].tolist(),
         "xc": result["xc"].tolist(),
         "yc": result["yc"].tolist(),
         "Cl": float(result["Cl"]),
         "Gamma": float(result["Gamma"]),
-        "chord": float(result["chord"])
+        "chord": float(result["chord"]),
     }
 
 @app.post("/import3d")
 async def import3d(file: UploadFile):
-    # TODO: implement STL/OBJ/GLB parsing (Phase 4)
+    # placeholder
     return {"name": file.filename}
+
+
